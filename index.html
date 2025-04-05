@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Predictor Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>   
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinha ao topo */
+            height: 100vh;
+            background: linear-gradient(to bottom, #ff002f, #ff1a1a);
+            padding-top: 40px; /* Espaço do topo */
+        }
+        .login-container {
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+        .login-container img {
+            width: 250px;
+            height: 200px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+        }
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .forgot-password {
+            display: block;
+            margin-top: 5px;
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: red;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .login-button:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .support-number {
+            margin-top: 20px;
+            font-size: 14px;
+            color: white;
+        }
+        .support-number a {
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="1.png" alt="Logo">
+        <h1>FlyHacker Pro</h1>
+        <form id="login-form">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Número" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Palavra-passe" required>
+            </div>
+            <a href="tel:926240472" class="forgot-password">Esqueceu a palavra-passe?</a>
+            <button type="submit" class="login-button">Connexion</button>
+        </form>
+        <div class="support-number">
+            Precisa de ajuda? Ligue para <a href="tel:926240472">926 240 472</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            fetch("users.json")
+                .then(response => response.json())
+                .then(users => {
+                    let validUser = users.find(user => user.username === username && user.password === password);
+                    
+                    if (validUser) {
+                        alert("Login bem-sucedido!");
+                        window.location.href = "bot.html";
+                    } else {
+                        alert("Credenciais inválidas! Tente novamente.");
+                    }
+                })
+                .catch(error => console.error("Erro ao carregar os usuários:", error));
+        });
+    </script>
+</body>
+</html>
+
+
