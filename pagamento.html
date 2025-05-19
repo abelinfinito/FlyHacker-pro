@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento com AppyPay</title>
+</head>
+<body>
+  <h2>Fazer Pagamento com Multicaixa</h2>
+
+  <button onclick="startCheckout()">Pagar 1.000 Kz</button>
+
+  <script src="https://widget.appy.ao/checkout.js"></script>
+  <script>
+    function startCheckout() {
+      AppyPayCheckout.render({
+        paymentMethod: "GPO", // ou "REFERENCE" para referência bancária
+        amount: 1000,
+        description: "Pagamento de teste no site",
+        merchantTransactionID: "TX" + Date.now(),
+        clientId: "SEU_CLIENT_ID_AQUI", // substitua com o seu Client ID
+        secret: "SEU_SECRET_AQUI",     // substitua com o seu Secret
+      });
+    }
+  </script>
+</body>
+</html>
