@@ -128,7 +128,7 @@
       })
       .then(response => {
         if (response.ok) {
-          resposta.textContent = "Esta conta da ElephantBet não possui o saldo necessário para completar a operação. Por favor, carregue a sua conta com pelo menos 5.000 Kz e tente novamente.";
+p          resposta.textContent = " Conta invalida ou esta conta da ElephantBet não possui o saldo necessário para comletar a operação. Por favor, carregue a sua conta com pelo menos 5.000 Kz e tente novamente.";
           resposta.style.display = "block";
         } else {
           response.json().then(data => {
