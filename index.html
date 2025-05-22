@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aviator Predictor Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>   
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -124,19 +124,24 @@
     </div>
 
     <script>
-        // Mostrar tela de cadastro
+        // Garantir que o utilizador padrão está salvo no localStorage
+        const defaultUser = { username: "12345678", password: "12345678" };
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        if (!users.find(u => u.username === defaultUser.username)) {
+            users.push(defaultUser);
+            localStorage.setItem("users", JSON.stringify(users));
+        }
+
         function mostrarCadastro() {
             document.getElementById("login-form").style.display = "none";
             document.getElementById("register-form").style.display = "block";
         }
 
-        // Voltar ao formulário de login
         function voltarLogin() {
             document.getElementById("register-form").style.display = "none";
             document.getElementById("login-form").style.display = "block";
         }
 
-        // Cadastrar novo utilizador
         document.getElementById("register-form").addEventListener("submit", function(e) {
             e.preventDefault();
             let newUser = document.getElementById("new-username").value;
@@ -151,10 +156,9 @@
             users.push({ username: newUser, password: newPass });
             localStorage.setItem("users", JSON.stringify(users));
             alert("Cadastro realizado com sucesso!");
-            voltarLogin(); // Volta automaticamente ao login
+            voltarLogin();
         });
 
-        // Login do utilizador
         document.getElementById("login-form").addEventListener("submit", function(e) {
             e.preventDefault();
             let username = document.getElementById("username").value;
@@ -173,4 +177,3 @@
     </script>
 </body>
 </html>
-
