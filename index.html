@@ -124,9 +124,6 @@
   </div>
 
   <script>
-    // Usuário fixo no código
-    const usuarioPadrao = { username: "12345678", password: "12345678" };
-
     function mostrarCadastro() {
       document.getElementById("login-form").style.display = "none";
       document.getElementById("register-form").style.display = "block";
@@ -137,8 +134,7 @@
       document.getElementById("login-form").style.display = "block";
     }
 
-    // Cadastro
-    document.getElementById("register-form").addEventListener("submit", function(e) {
+    document.getElementById("register-form").addEventListener("submit", function (e) {
       e.preventDefault();
       let newUser = document.getElementById("new-username").value;
       let newPass = document.getElementById("new-password").value;
@@ -155,25 +151,38 @@
       voltarLogin();
     });
 
-    // Login
-    document.getElementById("login-form").addEventListener("submit", function(e) {
+    document.getElementById("login-form").addEventListener("submit", function (e) {
       e.preventDefault();
       let username = document.getElementById("username").value;
       let password = document.getElementById("password").value;
 
       let users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Verificar usuário salvo OU o usuário padrão do código
-      let validUser = users.find(user => user.username === username && user.password === password) ||
-                      (username === usuarioPadrao.username && password === usuarioPadrao.password);
+      let validUser = users.find(user => user.username === username && user.password === password);
 
       if (validUser) {
-        alert("Login bem-sucedido!");
-        window.location.href = "bot.html";
+        loginSucesso();
       } else {
-        alert("Credenciais inválidas! Tente novamente.");
+        fetch('usuarios.json')
+          .then(response => response.json())
+          .then(data => {
+            let staticUser = data.find(user => user.username === username && user.password === password);
+            if (staticUser) {
+              loginSucesso();
+            } else {
+              alert("Credenciais inválidas! Tente novamente.");
+            }
+          })
+          .catch(error => {
+            console.error("Erro ao carregar banco JSON:", error);
+            alert("Erro de sistema. Tente novamente.");
+          });
       }
     });
+
+    function loginSucesso() {
+      alert("Login bem-sucedido!");
+      window.location.href = "bot.html";
+    }
   </script>
 </body>
 </html>
